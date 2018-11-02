@@ -26,12 +26,11 @@
           <argument>
             <kind>1</kind>
             <string>// Controls
-/**/
 C_UP = vk_up;
 C_DOWN = vk_down;
 C_LEFT = vk_left;
 C_RIGHT = vk_right;
-/**//*
+/*
 C_UP = ord('W');
 C_DOWN = ord('S');
 C_LEFT = ord('A');
@@ -40,10 +39,15 @@ C_RIGHT = ord('D');
 C_FIRE = ord('Z');
 
 // Movement variables
+xx = 0;
+yy = 0; // "real" y, on the skewed plane.
+z = 0;
 m_x = 0;
 m_y = 0;
 walkSpeed = 8;
 moving = 0;
+z_gravity = 4;
+z_accel = 0;
 
 image_speed = 0.5;
 
@@ -91,6 +95,8 @@ if keyboard_check_released(C_DOWN) { m_y = 0; moving = 0; }
 if keyboard_check_released(C_LEFT) { m_x = 0; moving = 0; }
 if keyboard_check_released(C_RIGHT) { m_x = 0; moving = 0; }
 
+if keyboard_check_pressed(C_JUMP) { jumping = 1; }
+
 if keyboard_check_pressed(C_FIRE) { firing = 1; }
 
 // Movement Physics
@@ -128,14 +134,34 @@ if (firing == 1) {
     firing = 0;
 }
 
+// Z axis stuff
+if (z &gt; 0) {
+    z_accel = z_gravity;
+    z -= z_accel;
+}
+
+if (z &lt; 0) {
+    z = 0;
+}
+
+
+// Jumping sequence
+if (jumping == 1) {
+    z -= 1;
+}
 
 // Sprite
-if (speed == 0) sprite_index = sprHybrid_idle;
-if (speed &gt; walkSpeed*0.5 || speed &lt; -(walkSpeed*0.5)) sprite_index = sprHybrid_walk;
-
+if (z == 0) {
+    if (speed == 0) sprite_index = sprHybrid_idle;
+    if (speed &gt; walkSpeed*0.5 || speed &lt; -(walkSpeed*0.5)) sprite_index = sprHybrid_walk;
+}
+else {
+    sprite_index = sprHybrid_jump;
+}
 if (m_x == -1) image_xscale = -1;
 if (m_x == 1) image_xscale = 1;
 
+// Show on 2d plane
 
 </string>
           </argument>
