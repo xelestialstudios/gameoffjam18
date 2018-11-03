@@ -87,7 +87,7 @@ for (i = 0; i &lt; ammo; i += 1;) {
 
 // Draw shadow
 a = draw_get_alpha();
-draw_set_alpha(2.5/(owner.z+1));
+draw_set_alpha(2.5/(owner.z+1)+0.1);
 draw_sprite(sprShadow, 0, owner.x, owner.yy*0.5);
 
 draw_set_alpha(a);

@@ -40,6 +40,12 @@ C_RIGHT = ord('D');
 C_JUMP = ord('X');
 C_FIRE = ord('Z');
 
+pad = 0;
+if (gamepad_is_connected(0)) {
+    pad = 1;
+}
+
+
 // Movement variables
 xx = x;
 yy = y*(1/0.5); // "real" y, on the skewed plane.
@@ -59,7 +65,7 @@ ground = 1;
 moving = 0;
 jumping = 0;
 
-walkSpeed = 4;
+walkSpeed = 5;
 
 image_speed = 0.25;
 
@@ -100,20 +106,53 @@ view_object[0] = drawManager;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>// Inputs
-if keyboard_check(C_UP) { m_y = -1; moving = 1; }
-if keyboard_check(C_DOWN) { m_y = 1; moving = 1; }
-if keyboard_check(C_LEFT) { m_x = -1; moving = 1; }
-if keyboard_check(C_RIGHT) { m_x = 1; moving = 1; }
+            <string>// Inputs, keyboard
+if (pad == 0) {
+    if keyboard_check(C_UP) { m_y = -1; moving = 1; }
+    if keyboard_check(C_DOWN) { m_y = 1; moving = 1; }
+    if keyboard_check(C_LEFT) { m_x = -1; moving = 1; }
+    if keyboard_check(C_RIGHT) { m_x = 1; moving = 1; }
+    
+    if keyboard_check_released(C_UP) { m_y = 0; moving = 0; }
+    if keyboard_check_released(C_DOWN) { m_y = 0; moving = 0; }
+    if keyboard_check_released(C_LEFT) { m_x = 0; moving = 0; }
+    if keyboard_check_released(C_RIGHT) { m_x = 0; moving = 0; }
+    
+    if keyboard_check_pressed(C_JUMP) { jumping = 1; }
+    
+    if keyboard_check_pressed(C_FIRE) { firing = 1; }
+}
 
-if keyboard_check_released(C_UP) { m_y = 0; moving = 0; }
-if keyboard_check_released(C_DOWN) { m_y = 0; moving = 0; }
-if keyboard_check_released(C_LEFT) { m_x = 0; moving = 0; }
-if keyboard_check_released(C_RIGHT) { m_x = 0; moving = 0; }
+// Inputs, pad
 
-if keyboard_check_pressed(C_JUMP) { jumping = 1; }
+//if (haxis &gt; 1
+if (pad == 1) {/*
+    haxis = gamepad_axis_value(0, gp_axislh);
+    vaxis = gamepad_axis_value(0, gp_axislv);
+    m_x = haxis;
+    m_y = vaxis;
+    moving = 1;
+    if (haxis == 0 &amp;&amp; vaxis == 0) {
+        moving = 0;
+    }*/
+    
+    if gamepad_button_check_pressed(0, gp_face1) {
+        jumping = 1;
+    }
+    
+    
+    if gamepad_button_check(0, gp_padu) { m_y = -1; moving = 1; }
+    if gamepad_button_check(0, gp_padd) { m_y = 1; moving = 1; }
+    if gamepad_button_check(0, gp_padl) { m_x = -1; moving = 1; }
+    if gamepad_button_check(0, gp_padr) { m_x = 1; moving = 1; }
+    
+    if gamepad_button_check_released(0, gp_padu) { m_y = 0; moving = 0; }
+    if gamepad_button_check_released(0, gp_padd) { m_y = 0; moving = 0; }
+    if gamepad_button_check_released(0, gp_padl) { m_x = 0; moving = 0; }
+    if gamepad_button_check_released(0, gp_padr) { m_x = 0; moving = 0; }
+    
+}
 
-if keyboard_check_pressed(C_FIRE) { firing = 1; }
 
 // Movement Physics
 

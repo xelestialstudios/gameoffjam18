@@ -6,13 +6,16 @@
   <NewExtensions/>
   <sounds name="sound"/>
   <sprites name="sprites">
-    <sprite>sprites\sprHybrid_idle</sprite>
-    <sprite>sprites\sprHybrid_jump</sprite>
-    <sprite>sprites\sprHybrid_walk</sprite>
+    <sprites name="hybrid">
+      <sprite>sprites\sprHybrid_jump</sprite>
+      <sprite>sprites\sprHybrid_idle</sprite>
+      <sprite>sprites\sprHybrid_walk</sprite>
+    </sprites>
     <sprite>sprites\sprite2</sprite>
     <sprite>sprites\sprShadow</sprite>
     <sprite>sprites\sprAmmo_1</sprite>
     <sprite>sprites\sprMuzzleFlash_1</sprite>
+    <sprite>sprites\sprUmbra_particles</sprite>
   </sprites>
   <backgrounds name="background">
     <background>background\background1</background>
@@ -23,7 +26,7 @@
     <object>objects\objPlayer</object>
     <object>objects\objDrawManager</object>
     <object>objects\objCreature</object>
-    <object>objects\objObject</object>
+    <object>objects\objEntity</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\room0</room>

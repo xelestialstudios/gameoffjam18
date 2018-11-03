@@ -25,7 +25,7 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>// Objects hold physics properties common to all 
+            <string>// Entities are anything that as physics properties, such as XYZ, movement, gravity, hitbox 
 xx = x;
 yy = y*(1/0.5);
 z = 0;
