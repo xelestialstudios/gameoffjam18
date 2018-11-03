@@ -50,7 +50,7 @@ ammo = variable_instance_get(objPlayer, "ammo");
           <argument>
             <kind>1</kind>
             <string>x = owner.x;
-y = owner.y;
+y = owner.yy*0.6;
 ammo = owner.ammo;
 </string>
           </argument>
@@ -74,10 +74,27 @@ ammo = owner.ammo;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>for (i = 0; i &lt; ammo; i += 1;) {
-    draw_sprite(sprAmmo_1,0,x-16+(i*4),y+23);
+            <string>// Draw ammo backing
+/*a = draw_get_alpha();
+draw_set_alpha(0.3);
+draw_rectangle(owner.x-17,owner.y+25,owner.x+16,owner.y+31,0);
+draw_set_alpha(a);*/
+
+// Draw ammo
+for (i = 0; i &lt; ammo; i += 1;) {
+    draw_sprite(sprAmmo_1,0,owner.x-17+(i*4),owner.y+24);
 }
-//draw_text(x,y+50,ammo);
+
+// Draw shadow
+a = draw_get_alpha();
+draw_set_alpha(2.5/(owner.z+1));
+draw_sprite(sprShadow, 0, owner.x, owner.yy*0.6);
+
+draw_set_alpha(a);
+
+
+
+
 
 
 

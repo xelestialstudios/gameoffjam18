@@ -36,29 +36,40 @@ C_DOWN = ord('S');
 C_LEFT = ord('A');
 C_RIGHT = ord('D');
 */
+
+C_JUMP = ord('X');
 C_FIRE = ord('Z');
 
 // Movement variables
-xx = 0;
-yy = 0; // "real" y, on the skewed plane.
+xx = x;
+yy = y*(1/0.6); // "real" y, on the skewed plane.
 z = 0;
 m_x = 0;
 m_y = 0;
-walkSpeed = 8;
-moving = 0;
-z_gravity = 4;
+dir = 0;
+spd = 0;
+
+z_gravity = 0.25;
 z_accel = 0;
 
-image_speed = 0.5;
+walkSpeed = 4;
+moving = 0;
+jumping = 0;
+
+image_speed = 0.25;
 
 // Combat variables
 ammo = 8;
 weapon = 0;
 firing = 0;
+jumpDelay = 8;
+jumpStrength = 5;
 
 
 // Create UI
 drawManager = instance_create(x,y,objDrawManager);
+view_object[0] = drawManager;
+
 
 
 
@@ -100,31 +111,51 @@ if keyboard_check_pressed(C_JUMP) { jumping = 1; }
 if keyboard_check_pressed(C_FIRE) { firing = 1; }
 
 // Movement Physics
+
+// Jumping sequence
+if (jumping &gt; 0 &amp;&amp; jumping &lt; 1+jumpDelay) {
+    if (z != 0) jumping = 0-1;  // Cancel if we're in the air already
+    image_speed = 0;
+    sprite_index = sprHybrid_jump;
+    image_index = 0;
+    spd = 0;
+    moving -= 1;
+    jumping += 1;
+}
+if (jumping == 1+jumpDelay) {
+    image_index = 1;
+    z_accel = jumpStrength;
+    moving += 1;
+    jumping = 0;
+}
+
+
 // Direction
-direction = point_direction(0, 0, m_x, m_y);//darctan2(-m_y, m_x);
+dir = darctan2(m_y, m_x);
 
-// Speed
-if (moving == 1) {
-    speed = walkSpeed;
-    vspeed = vspeed * 0.6;
-}
-if (moving != 1) {
-    speed = 0;
-}
+// Speed, walking
+if (ground == 1) {
 
-/*
-if (moving == 1) {
-    accel_x = cos(arctan2(-m_y, m_x))*walkSpeed;
-    accel_y = sin(arctan2(m_y, m_x))*walkSpeed;
-}
-if (moving != 1) {
-    accel_x = 0;
-    accel_y = 0;
+    if (moving == 1) {
+        spd = walkSpeed;
+    }
+    if (moving != 1) {
+        spd = 0;
+    }
 }
 
-x += accel_x;
-y += accel_y;
-*/
+xx_accel = dcos(dir)*spd;
+yy_accel = dsin(dir)*spd;
+
+xx += xx_accel;
+yy += yy_accel;
+
+
+
+// Show on 2d plane
+y = (yy*0.6)-z;
+x = xx;
+
 
 // Firing
 if (firing == 1) {
@@ -135,33 +166,34 @@ if (firing == 1) {
 }
 
 // Z axis stuff
-if (z &gt; 0) {
-    z_accel = z_gravity;
-    z -= z_accel;
-}
+z += z_accel;
 
+if (z &gt; 0) {
+    z_accel -= z_gravity;
+}
 if (z &lt; 0) {
     z = 0;
+    z_accel = 0;
 }
 
 
-// Jumping sequence
-if (jumping == 1) {
-    z -= 1;
-}
 
 // Sprite
-if (z == 0) {
-    if (speed == 0) sprite_index = sprHybrid_idle;
-    if (speed &gt; walkSpeed*0.5 || speed &lt; -(walkSpeed*0.5)) sprite_index = sprHybrid_walk;
+if (z == 0 &amp;&amp; jumping == 0) {
+    image_speed = 0.25;
+    if (spd == 0) sprite_index = sprHybrid_idle;
+    if (spd &gt; walkSpeed*0.5 || spd &lt; -(walkSpeed*0.5)) sprite_index = sprHybrid_walk;
 }
-else {
-    sprite_index = sprHybrid_jump;
+if (z_accel &lt; -3)  {
+    if (sprite_index == sprHybrid_jump) {
+        image_index = 2;
+    }
 }
+
 if (m_x == -1) image_xscale = -1;
 if (m_x == 1) image_xscale = 1;
 
-// Show on 2d plane
+
 
 </string>
           </argument>
