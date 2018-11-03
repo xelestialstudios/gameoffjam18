@@ -42,15 +42,18 @@ C_FIRE = ord('Z');
 
 // Movement variables
 xx = x;
-yy = y*(1/0.6); // "real" y, on the skewed plane.
-z = 0;
+yy = y*(1/0.5); // "real" y, on the skewed plane.
+xx_accel = 0;
+yy_accel = 0;
 m_x = 0;
 m_y = 0;
 dir = 0;
 spd = 0;
 
+z = 0;
 z_gravity = 0.25;
 z_accel = 0;
+ground = 1;
 
 walkSpeed = 4;
 moving = 0;
@@ -113,8 +116,12 @@ if keyboard_check_pressed(C_FIRE) { firing = 1; }
 // Movement Physics
 
 // Jumping sequence
-if (jumping &gt; 0 &amp;&amp; jumping &lt; 1+jumpDelay) {
-    if (z != 0) jumping = 0-1;  // Cancel if we're in the air already
+
+if (jumping == 1) {
+    if (z == 0) jumping = 2;  // Wait until on the ground again
+}
+
+if (jumping &gt; 1 &amp;&amp; jumping &lt; 1+jumpDelay) {
     image_speed = 0;
     sprite_index = sprHybrid_jump;
     image_index = 0;
@@ -129,23 +136,35 @@ if (jumping == 1+jumpDelay) {
     jumping = 0;
 }
 
+// Check if on ground
+    // Temp solution
+if (z == 0) {
+    ground = 1;
+}
+if (z != 0) {
+    ground = 0;
+}
 
 // Direction
 dir = darctan2(m_y, m_x);
 
-// Speed, walking
+// Speed
 if (ground == 1) {
-
     if (moving == 1) {
         spd = walkSpeed;
     }
     if (moving != 1) {
         spd = 0;
     }
+    xx_accel = dcos(dir)*spd;
+    yy_accel = dsin(dir)*spd;
 }
 
-xx_accel = dcos(dir)*spd;
-yy_accel = dsin(dir)*spd;
+// Speed, air
+if (ground == 0) {
+    //xx_accel = (xx_accel*0.985);
+    //yy_accel = (yy_accel*0.985);
+}
 
 xx += xx_accel;
 yy += yy_accel;
@@ -153,7 +172,7 @@ yy += yy_accel;
 
 
 // Show on 2d plane
-y = (yy*0.6)-z;
+y = (yy*0.5)-z;
 x = xx;
 
 
