@@ -53,11 +53,13 @@ spd = 0;
 z = 0;
 z_gravity = 0.25;
 z_accel = 0;
-ground = 1;
 
-walkSpeed = 4;
+// States
+ground = 1;
 moving = 0;
 jumping = 0;
+
+walkSpeed = 4;
 
 image_speed = 0.25;
 

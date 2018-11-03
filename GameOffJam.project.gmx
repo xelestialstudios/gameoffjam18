@@ -22,8 +22,8 @@
   <objects name="objects">
     <object>objects\objPlayer</object>
     <object>objects\objDrawManager</object>
-    <object>objects\object4</object>
-    <object>objects\object5</object>
+    <object>objects\objCreature</object>
+    <object>objects\objObject</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\room0</room>

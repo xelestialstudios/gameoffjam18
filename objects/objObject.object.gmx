@@ -7,7 +7,53 @@
   <persistent>0</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
-  <events/>
+  <events>
+    <event eventtype="0" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>// Objects hold physics properties common to all 
+xx = x;
+yy = y*(1/0.5);
+z = 0;
+
+xx_accel = 0;
+yy_accel = 0;
+z_accel = 0;
+
+z_gravity = 0.25;
+
+ground = 1;
+moving = 0;
+jumping = 0;
+
+m_x = 0;
+m_y = 0;
+dir = 0;
+
+spd = 0;
+
+image_speed = 0.25;  // Budget 15fps animation
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+  </events>
   <PhysicsObject>0</PhysicsObject>
   <PhysicsObjectSensor>0</PhysicsObjectSensor>
   <PhysicsObjectShape>0</PhysicsObjectShape>
