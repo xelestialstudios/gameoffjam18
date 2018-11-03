@@ -65,7 +65,11 @@ ground = 1;
 moving = 0;
 jumping = 0;
 
+// Attributes
 walkSpeed = 5;
+airSpeed = 0.05;  // This is acceleration
+jumpDelay = 8;
+jumpStrength = 6;
 
 image_speed = 0.25;
 
@@ -73,8 +77,6 @@ image_speed = 0.25;
 ammo = 8;
 weapon = 0;
 firing = 0;
-jumpDelay = 8;
-jumpStrength = 5;
 
 
 // Create UI
@@ -126,21 +128,7 @@ if (pad == 0) {
 // Inputs, pad
 
 //if (haxis &gt; 1
-if (pad == 1) {/*
-    haxis = gamepad_axis_value(0, gp_axislh);
-    vaxis = gamepad_axis_value(0, gp_axislv);
-    m_x = haxis;
-    m_y = vaxis;
-    moving = 1;
-    if (haxis == 0 &amp;&amp; vaxis == 0) {
-        moving = 0;
-    }*/
-    
-    if gamepad_button_check_pressed(0, gp_face1) {
-        jumping = 1;
-    }
-    
-    
+if (pad == 1) {
     if gamepad_button_check(0, gp_padu) { m_y = -1; moving = 1; }
     if gamepad_button_check(0, gp_padd) { m_y = 1; moving = 1; }
     if gamepad_button_check(0, gp_padl) { m_x = -1; moving = 1; }
@@ -150,6 +138,9 @@ if (pad == 1) {/*
     if gamepad_button_check_released(0, gp_padd) { m_y = 0; moving = 0; }
     if gamepad_button_check_released(0, gp_padl) { m_x = 0; moving = 0; }
     if gamepad_button_check_released(0, gp_padr) { m_x = 0; moving = 0; }
+    
+    if gamepad_button_check_pressed(0, gp_face1) { jumping = 1; }
+    if gamepad_button_check_pressed(0, gp_face2) { firing = 1; }
     
 }
 
@@ -174,7 +165,6 @@ if (jumping == 1+jumpDelay) {
     image_index = 1;
     z_accel = jumpStrength;
     moving += 1;
-    jumping = 0;
 }
 
 // Check if on ground
@@ -203,8 +193,14 @@ if (ground == 1) {
 
 // Speed, air
 if (ground == 0) {
-    //xx_accel = (xx_accel*0.985);
-    //yy_accel = (yy_accel*0.985);
+    if (moving == 1) {
+        xx_accel += dcos(dir)*airSpeed;
+        yy_accel += dsin(dir)*airSpeed;
+    }
+    xx_accel = xx_accel*0.95;
+    yy_accel = yy_accel*0.95;
+    if (moving != 1) {
+    }
 }
 
 xx += xx_accel;
@@ -236,7 +232,12 @@ if (z &lt; 0) {
     z_accel = 0;
 }
 
-
+// Finish jumping
+if (jumping == 1+jumpDelay) {
+    xx_accel = xx_accel*0.4;
+    yy_accel = yy_accel*0.4;
+    jumping = 0;
+}
 
 // Sprite
 if (z == 0 &amp;&amp; jumping == 0) {
@@ -250,9 +251,12 @@ if (z_accel &lt; -3)  {
     }
 }
 
+// Facing
 if (m_x == -1) image_xscale = -1;
 if (m_x == 1) image_xscale = 1;
 
+// Depth
+depth = -(yy + 20)
 
 
 </string>

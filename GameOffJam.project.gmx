@@ -16,6 +16,8 @@
     <sprite>sprites\sprAmmo_1</sprite>
     <sprite>sprites\sprMuzzleFlash_1</sprite>
     <sprite>sprites\sprUmbra_particles</sprite>
+    <sprite>sprites\sprBlock</sprite>
+    <sprite>sprites\sprBlock_half</sprite>
   </sprites>
   <backgrounds name="background">
     <background>background\background1</background>
@@ -25,8 +27,11 @@
   <objects name="objects">
     <object>objects\objPlayer</object>
     <object>objects\objDrawManager</object>
-    <object>objects\objCreature</object>
     <object>objects\objEntity</object>
+    <object>objects\objCreature</object>
+    <object>objects\objBlock</object>
+    <object>objects\objBlock_half</object>
+    <object>objects\objMapGen1</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\room0</room>
